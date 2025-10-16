@@ -9,11 +9,12 @@ app = FastAPI()
 # Configuração do CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],  
-    allow_headers=["*"],  
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
 )
+
 
 class Conta(BaseModel):
     nome: str
@@ -22,7 +23,9 @@ class Conta(BaseModel):
     valor: float
     situacao: str
 
+
 contas: Dict[int, Conta] = {}
+
 
 @app.get("/")
 def home():
@@ -33,8 +36,12 @@ def home():
 def criar_conta(conta: Conta):
     print("Dados recebidos:", conta.dict())
     try:
-        if not all([conta.nome, conta.descricao, conta.data, conta.valor, conta.situacao]):
-            raise HTTPException(status_code=422, detail="Todos os campos são obrigatórios")
+        if not all(
+            [conta.nome, conta.descricao, conta.data, conta.valor, conta.situacao]
+        ):
+            raise HTTPException(
+                status_code=422, detail="Todos os campos são obrigatórios"
+            )
         nova_conta_id = len(contas) + 1
         contas[nova_conta_id] = conta
         return {"id": nova_conta_id, "mensagem": "Conta criada com sucesso"}
@@ -42,12 +49,14 @@ def criar_conta(conta: Conta):
         print("Erro:", e)
         raise
 
+
 @app.get("/pegarConta/{id_conta}")
 def pegar_conta(id_conta: int):
     if id_conta in contas:
         return contas[id_conta]
     else:
         return {"Erro": "ID de conta inexistente"}
+
 
 @app.put("/atualizarConta/{id_conta}")
 def atualizar_conta(id_conta: int, conta: Conta):
@@ -57,6 +66,7 @@ def atualizar_conta(id_conta: int, conta: Conta):
     else:
         return {"Erro": "ID de conta inexistente"}
 
+
 @app.delete("/deletarConta/{id_conta}")
 def deletar_conta(id_conta: int):
     if id_conta in contas:
@@ -64,7 +74,8 @@ def deletar_conta(id_conta: int):
         return {"mensagem": "Conta deletada com sucesso"}
     else:
         return {"Erro": "ID de conta inexistente"}
-    
+
+
 @app.get("/listarContas/")
 def listar_contas():
     return contas
