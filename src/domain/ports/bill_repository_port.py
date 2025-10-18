@@ -17,7 +17,7 @@ class IBillRepository(ABC):
         pass
 
     @abstractmethod
-    def delete(self, id_bill) -> bool:
+    def delete(self, id_bill: int) -> bool:
         pass
 
     @abstractmethod

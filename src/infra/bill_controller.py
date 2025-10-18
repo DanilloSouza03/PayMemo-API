@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 from src.infra.schemas.bill_schema import BillSchema
-from src.app.bill_usecase import BillUseCase
 from src.infra.bill_repository import BillRepository
+from src.app.bill_usecase import BillUseCase
+from src.app.dtos.bill_dto import BillDTO
 
 
 repository = BillRepository()
@@ -23,7 +24,8 @@ def home():
 
 @router.post("/criarConta/")
 def create_bill_endpoint(bill: BillSchema):
-    return use_case.create_bill(bill.dict())
+    bill_dto = BillDTO(**bill.model_dump())
+    return use_case.create_bill(bill_dto)
 
 
 @router.get("/pegarConta/{id_bill}")
@@ -43,4 +45,5 @@ def delete_bill_endpoint(id_bill: int):
 
 @router.put("/atualizarConta/{id_bill}")
 def update_bill_endpoint(id_bill: int, bill: BillSchema):
-    return use_case.update_bill(id_bill, bill.dict())
+    bill_dto = BillDTO(**bill.model_dump())
+    return use_case.update_bill(id_bill, bill_dto)
