@@ -23,3 +23,7 @@ class IBillRepository(ABC):
     @abstractmethod
     def update(self, bill: Bill) -> bool:
         pass
+
+    @abstractmethod
+    def count(self) -> int:
+        pass

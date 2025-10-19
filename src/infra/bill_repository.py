@@ -26,3 +26,6 @@ class BillRepository(IBillRepository):
             bills[id_bill] = bill
             return True
         return False
+
+    def count(self) -> int:
+        return len(bills)

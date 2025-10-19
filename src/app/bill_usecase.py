@@ -57,3 +57,6 @@ class BillUseCase:
         if sucess:
             return {"message": "Conta atualizada com sucesso!!"}
         raise BillNotFoundError("ID de conta inexiste..")
+
+    def get_bill_count(self) -> int:
+        return self.repository.count()
