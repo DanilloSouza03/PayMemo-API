@@ -1,7 +1,7 @@
 from src.domain.bill import Bill
 from src.domain.ports.bill_repository_port import IBillRepository
 from src.app.dtos.bill_dto import BillDTO
-from fastapi import HTTPException
+from src.app.exceptions import InvalidBillDataError, BillNotFoundError
 
 
 class BillUseCase:
@@ -18,9 +18,8 @@ class BillUseCase:
                 bill_data.situation,
             ]
         ):
-            raise HTTPException(
-                status_code=422, detail="Todos os campos são obrigatórios"
-            )
+            raise InvalidBillDataError("Todos os campos são obrigatórios")
+
         bill = Bill(
             name=bill_data.name,
             description=bill_data.description,
@@ -35,7 +34,7 @@ class BillUseCase:
         bill = self.repository.get(id_bill)
         if bill:
             return bill.__dict__
-        return {"erro": "ID de conta inexistente."}
+        raise BillNotFoundError("ID de conta inexistente.")
 
     def get_bills(self):
         return {id_: bill.__dict__ for id_, bill in self.repository.list().items()}
@@ -44,7 +43,7 @@ class BillUseCase:
         sucess = self.repository.delete(id_bill)
         if sucess:
             return {"message": "Conta apagada com sucesso."}
-        return {"error": "ID de conta inexistente!"}
+        raise BillNotFoundError("ID de conta inexistente!")
 
     def update_bill(self, id_bill: int, bill_data: BillDTO):
         bill = Bill(
@@ -57,4 +56,4 @@ class BillUseCase:
         sucess = self.repository.update(id_bill, bill)
         if sucess:
             return {"message": "Conta atualizada com sucesso!!"}
-        return {"error": "ID de conta inexiste.."}
+        raise BillNotFoundError("ID de conta inexiste..")
