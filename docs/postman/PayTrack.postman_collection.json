@@ -1,0 +1,140 @@
+{
+	"info": {
+		"_postman_id": "235ee9fe-bb1e-41c1-8d0e-c08e7b60c6bb",
+		"name": "PayTrack",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39863100"
+	},
+	"item": [
+		{
+			"name": "bill",
+			"item": [
+				{
+					"name": "home",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_bill",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"dentista\",\r\n  \"description\": \"conta nova\",\r\n  \"date\": \"18/10/2025\",\r\n  \"value\": 500,\r\n  \"situation\": \"Á pagar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/criarConta/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"criarConta",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_bill",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/pegarConta/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"pegarConta",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_bills",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/listarContas/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"listarContas",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete_bill",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/deletarConta/2",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"deletarConta",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_bill",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"dentista\",\r\n  \"description\": \"conta nova\",\r\n  \"date\": \"18/10/2025\",\r\n  \"value\": 50000,\r\n  \"situation\": \"Pago\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/atualizarConta/1",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"atualizarConta",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
