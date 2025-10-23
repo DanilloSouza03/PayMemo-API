@@ -1,9 +1,9 @@
-# 📑 PAY Track - API de Controle de Contas
+# 📑 PAY Memo - API de Controle de Contas
 
 ## Descrição
-A **PAY Track** é uma API desenvolvida para gerenciar um sistema de controle de contas. Com esta API, você pode criar, listar, atualizar e deletar contas. Foi implementada usando **FastAPI**, com validação e tratamento de erros utilizando **Pydantic**.
+A **PAY Memo** é uma API desenvolvida para gerenciar um sistema de controle de contas. Com esta API, você pode criar, listar, atualizar e deletar contas. Foi implementada usando **FastAPI**, com validação e tratamento de erros utilizando **Pydantic**.
 
-![Imagem de Exemplo](Logo.png)
+![Imagem de Exemplo](logoNew.png)
 
 ## 🛠️ Tecnologias Usadas
 - **Python**: Linguagem de programação principal.
