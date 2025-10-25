@@ -11,7 +11,7 @@ def get_bill_use_case() -> BillUseCase:
     return BillUseCase(repository)
 
 
-router = APIRouter()
+router = APIRouter(prefix="/bill", tags=["Bills"])
 
 
 @router.get("/")
