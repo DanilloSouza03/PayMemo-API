@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from uuid import UUID
 
 
 class BillSchema(BaseModel):
@@ -7,3 +8,4 @@ class BillSchema(BaseModel):
     date: str
     value: float
     situation: str
+    user_id: UUID

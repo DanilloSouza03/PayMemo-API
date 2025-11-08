@@ -1,28 +1,37 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from src.infra.schemas.bill_schema import BillSchema
 from src.infra.bill_repository import BillRepository
+from src.infra.user_repository import UserRepository
 from src.app.bill_usecase import BillUseCase
 from src.app.dtos.bill_dto import BillDTO
-from src.app.exceptions import BillNotFoundError, InvalidBillDataError
+from src.app.exceptions import (
+    BillNotFoundError,
+    InvalidBillDataError,
+    UserNotFoundError,
+)
+from uuid import UUID
 
 
 def get_bill_use_case() -> BillUseCase:
-    repository = BillRepository()
-    return BillUseCase(repository)
+    bill_repository = BillRepository()
+    user_repository = UserRepository()
+    return BillUseCase(bill_repository, user_repository)
 
 
 router = APIRouter(prefix="/bill", tags=["Bills"])
 
 
-@router.get("/")
-def home(use_case: BillUseCase = Depends(get_bill_use_case)):
-    count_bills = use_case.get_bill_count()
-
-    return {
-        "Bem vindos a nova PayTrack, tentando implementar uma nova arquitetura": {
-            "Temos um total de contas": count_bills
-        }
-    }
+@router.get("/home/{user_id}")
+def home(user_id: UUID, use_case: BillUseCase = Depends(get_bill_use_case)):
+    try:
+        user_bills = use_case.get_bills(user_id)
+        return {"message": f"Contas para o usuário {user_id}", "bills": user_bills}
+    except UserNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
 
 
 @router.post("/criarConta/")
@@ -30,33 +39,44 @@ def create_bill_endpoint(
     bill: BillSchema, use_case: BillUseCase = Depends(get_bill_use_case)
 ):
     try:
-        bill_dto = BillDTO(**bill.model_dump())
+        bill_dto = BillDTO(
+            name=bill.name,
+            description=bill.description,
+            date=bill.date,
+            value=bill.value,
+            situation=bill.situation,
+            user_id=bill.user_id,
+        )
         return use_case.create_bill(bill_dto)
     except InvalidBillDataError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(e)
         )
+    except UserNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
 
-@router.get("/pegarConta/{id_bill}")
-def get_bill_endpoint(id_bill: int, use_case: BillUseCase = Depends(get_bill_use_case)):
+@router.get("/pegarConta/{user_id}/{id_bill}")
+def get_bill_endpoint(
+    user_id: UUID, id_bill: int, use_case: BillUseCase = Depends(get_bill_use_case)
+):
     try:
-        return use_case.get_bill(id_bill)
+        return use_case.get_bill(id_bill, user_id)
     except BillNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
 
 @router.get("/listarContas/")
-def get_bills_endpoint(use_case: BillUseCase = Depends(get_bill_use_case)):
-    return use_case.get_bills()
+def get_all_bills_endpoint(use_case: BillUseCase = Depends(get_bill_use_case)):
+    return use_case.get_all_bills()
 
 
-@router.delete("/deletarConta/{id_bill}")
+@router.delete("/deletarConta/{user_id}/{id_bill}")
 def delete_bill_endpoint(
-    id_bill: int, use_case: BillUseCase = Depends(get_bill_use_case)
+    user_id: UUID, id_bill: int, use_case: BillUseCase = Depends(get_bill_use_case)
 ):
     try:
-        return use_case.delete_bill(id_bill)
+        return use_case.delete_bill(id_bill, user_id)
     except BillNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
@@ -66,11 +86,20 @@ def update_bill_endpoint(
     id_bill: int, bill: BillSchema, use_case: BillUseCase = Depends(get_bill_use_case)
 ):
     try:
-        bill_dto = BillDTO(**bill.model_dump())
+        bill_dto = BillDTO(
+            name=bill.name,
+            description=bill.description,
+            date=bill.date,
+            value=bill.value,
+            situation=bill.situation,
+            user_id=bill.user_id,
+        )
         return use_case.update_bill(id_bill, bill_dto)
     except InvalidBillDataError as e:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(e)
         )
     except BillNotFoundError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except UserNotFoundError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))

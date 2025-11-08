@@ -1,3 +1,4 @@
+import re
 from src.domain.user import User
 from src.domain.ports.user_repository_port import IUserRepository
 from src.app.exceptions import InvalidUserDataError, UserNotFoundError
@@ -9,22 +10,30 @@ class UserUseCase:
     def __init__(self, repository: IUserRepository):
         self.repository = repository
 
-    def create_user(self, user: UserDTO):
+    def _validate_user_data(self, user_data: UserDTO):
         if not all(
             [
-                user.name,
-                user.email,
-                user.password,
+                user_data.name,
+                user_data.email,
+                user_data.password,
             ]
         ):
-            raise InvalidUserDataError("Faltam dados obrigátorios...")
+            raise InvalidUserDataError("Faltam dados obrigátorios.")
+
+        # Validar formato de e-mail
+        email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        if not re.match(email_regex, user_data.email):
+            raise InvalidUserDataError("Formato de e-mail inválido.")
+
+    def create_user(self, user_data: UserDTO):
+        self._validate_user_data(user_data)
 
         user = User(
-            name=user.name,
-            email=user.email,
-            password=user.password,
-            phone=user.phone,
-            id=user.id,
+            name=user_data.name,
+            email=user_data.email,
+            password=user_data.password,
+            phone=user_data.phone,
+            id=user_data.id,
         )
 
         new_user = self.repository.create(user)
@@ -45,21 +54,14 @@ class UserUseCase:
             return {"message": "Usuário apagado com sucesso..."}
         raise UserNotFoundError("ID de usuário errado ou não existe!")
 
-    def update_user(self, id_user: UUID, user: UserDTO):
-        if not all(
-            [
-                user.name,
-                user.email,
-                user.password,
-            ]
-        ):
-            raise InvalidUserDataError("Faltam dados obrigatórios.")
+    def update_user(self, id_user: UUID, user_data: UserDTO):
+        self._validate_user_data(user_data)
 
         user = User(
-            name=user.name,
-            email=user.email,
-            password=user.password,
-            phone=user.phone,
+            name=user_data.name,
+            email=user_data.email,
+            password=user_data.password,
+            phone=user_data.phone,
             id=id_user,
         )
         success = self.repository.update(id_user, user)

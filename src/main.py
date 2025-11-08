@@ -15,5 +15,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.get("/")
+def iniciarAPI():
+    return "Route inicial..."
+
+
 app.include_router(bill_router)
 app.include_router(user_router)
