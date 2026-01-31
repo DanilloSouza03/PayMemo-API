@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Dict
 from uuid import UUID
-from src.domain.bill import Bill
+from paymemo.domain.bill import Bill
 
 
 class IBillRepository(ABC):

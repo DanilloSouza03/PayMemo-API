@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from src.infra.schemas.bill_schema import BillSchema
-from src.infra.bill_repository import BillRepository
-from src.infra.user_repository import UserRepository
-from src.app.bill_usecase import BillUseCase
-from src.app.dtos.bill_dto import BillDTO
-from src.app.exceptions import (
+from paymemo.infra.schemas.bill_schema import BillSchema
+from paymemo.infra.bill_repository import BillRepository
+from paymemo.infra.user_repository import UserRepository
+from paymemo.app.bill_usecase import BillUseCase
+from paymemo.app.dtos.bill_dto import BillDTO
+from paymemo.app.exceptions import (
     BillNotFoundError,
     InvalidBillDataError,
     UserNotFoundError,

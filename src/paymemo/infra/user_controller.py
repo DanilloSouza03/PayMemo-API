@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from src.infra.schemas.user_schema import UserSchema
-from src.infra.user_repository import UserRepository
-from src.app.user_usecase import UserUseCase
-from src.app.dtos.user_dto import UserDTO
-from src.app.exceptions import InvalidUserDataError, UserNotFoundError
+from paymemo.infra.schemas.user_schema import UserSchema
+from paymemo.infra.user_repository import UserRepository
+from paymemo.app.user_usecase import UserUseCase
+from paymemo.app.dtos.user_dto import UserDTO
+from paymemo.app.exceptions import InvalidUserDataError, UserNotFoundError
 from uuid import UUID
 
 

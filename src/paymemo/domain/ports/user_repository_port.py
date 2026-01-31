@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional, Dict
 from uuid import UUID
-from src.domain.user import User
+from paymemo.domain.user import User
 
 
 class IUserRepository(ABC):

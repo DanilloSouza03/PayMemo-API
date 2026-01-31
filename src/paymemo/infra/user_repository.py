@@ -1,7 +1,7 @@
-from src.domain.ports.user_repository_port import IUserRepository
-from src.domain.user import User
+from paymemo.domain.ports.user_repository_port import IUserRepository
+from paymemo.domain.user import User
 from typing import Optional, Dict
-from src.infra.db_memory import users
+from paymemo.infra.db_memory import users
 from uuid import uuid4, UUID
 
 

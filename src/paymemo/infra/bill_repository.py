@@ -1,6 +1,6 @@
-from src.domain.ports.bill_repository_port import IBillRepository
-from src.domain.bill import Bill
-from src.infra.db_memory import bills
+from paymemo.domain.ports.bill_repository_port import IBillRepository
+from paymemo.domain.bill import Bill
+from paymemo.infra.db_memory import bills
 from typing import Dict
 from uuid import UUID
 

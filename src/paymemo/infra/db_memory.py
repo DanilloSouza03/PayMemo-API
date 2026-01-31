@@ -1,7 +1,7 @@
 from typing import Dict
 from uuid import UUID
-from src.domain.bill import Bill
-from src.domain.user import User
+from paymemo.domain.bill import Bill
+from paymemo.domain.user import User
 
 # Banco em memória / Database "fake"
 

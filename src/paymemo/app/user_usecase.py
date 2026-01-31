@@ -1,8 +1,8 @@
 import re
-from src.domain.user import User
-from src.domain.ports.user_repository_port import IUserRepository
-from src.app.exceptions import InvalidUserDataError, UserNotFoundError
-from src.app.dtos.user_dto import UserDTO
+from paymemo.domain.user import User
+from paymemo.domain.ports.user_repository_port import IUserRepository
+from paymemo.app.exceptions import InvalidUserDataError, UserNotFoundError
+from paymemo.app.dtos.user_dto import UserDTO
 from uuid import UUID
 
 
