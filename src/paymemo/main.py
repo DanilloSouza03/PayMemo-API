@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.infra.bill_controller import router as bill_router
+from paymemo.infra.bill_controller import router as bill_router
+from paymemo.infra.user_controller import router as user_router
 
 
 app = FastAPI()
@@ -14,4 +15,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.get("/")
+def iniciarAPI():
+    return "Route inicial..."
+
+
 app.include_router(bill_router)
+app.include_router(user_router)
