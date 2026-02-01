@@ -10,6 +10,14 @@ class IUserRepository(ABC):
         pass
 
     @abstractmethod
+    def check_duplicate_email(self, email: str) -> bool:
+        pass
+
+    @abstractmethod
+    def check_duplicate_phone(self, phone: str) -> bool:
+        pass
+
+    @abstractmethod
     def get(self, id: UUID) -> Optional[User]:
         pass
 

@@ -11,6 +11,21 @@ class UserRepository(IUserRepository):
         users[user.id] = user
         return user.id
 
+    def check_duplicate_email(self, email):
+        for user in users.values():
+            if user.email == email:
+                return True
+        return False
+
+    def check_duplicate_phone(self, phone):
+        if phone is None:
+            return False
+
+        for user in users.values():
+            if user.phone == phone:
+                return True
+        return False
+
     def get(self, id: UUID) -> Optional[User]:
         return users.get(id)
 

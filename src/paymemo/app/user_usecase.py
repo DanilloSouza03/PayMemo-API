@@ -10,7 +10,7 @@ class UserUseCase:
     def __init__(self, repository: IUserRepository):
         self.repository = repository
 
-    def _validate_user_data(self, user_data: UserDTO):
+    def _validate_user_data(self, user_data: UserDTO, is_update: bool = False):
         if not all(
             [
                 user_data.name,
@@ -24,6 +24,24 @@ class UserUseCase:
         email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         if not re.match(email_regex, user_data.email):
             raise InvalidUserDataError("Formato de e-mail inválido.")
+
+        # Verificar duplicada de email
+        if self.repository.check_duplicate_email(user_data.email):
+            if is_update:
+                existing_user = self.repository.get(user_data.id)
+                if existing_user and existing_user.email != user_data.email:
+                    raise InvalidUserDataError("E-mail já cadastrado.")
+            else:
+                raise InvalidUserDataError("E-mail já cadastrado.")
+
+        # Verificar duplicada de número se existir
+        if user_data.phone and self.repository.check_duplicate_phone(user_data.phone):
+            if is_update:
+                existing_user = self.repository.get(user_data.id)
+                if existing_user and existing_user.phone != user_data.phone:
+                    raise InvalidUserDataError("Telefone já cadastrado.")
+            else:
+                raise InvalidUserDataError("Telefone já cadastrado.")
 
     def create_user(self, user_data: UserDTO):
         self._validate_user_data(user_data)
@@ -55,7 +73,12 @@ class UserUseCase:
         raise UserNotFoundError("ID de usuário errado ou não existe!")
 
     def update_user(self, id_user: UUID, user_data: UserDTO):
-        self._validate_user_data(user_data)
+        existing_user = self.repository.get(id_user)
+        if not existing_user:
+            raise UserNotFoundError("ID de usuário inexistente.")
+
+        user_data.id = id_user
+        self._validate_user_data(user_data, is_update=True)
 
         user = User(
             name=user_data.name,
