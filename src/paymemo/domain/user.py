@@ -9,7 +9,7 @@ class User:
         name: str = "",
         email: str = "",
         password: str = "",
-        phone: Optional[int] = None,
+        phone: Optional[str] = None,
     ):
         self.id = id or uuid4()
         self.name = name

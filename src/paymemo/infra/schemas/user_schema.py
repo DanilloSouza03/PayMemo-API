@@ -8,4 +8,4 @@ class UserSchema(BaseModel):
     name: str
     email: str
     password: str
-    phone: Optional[int] = None
+    phone: Optional[str] = None

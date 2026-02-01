@@ -8,7 +8,7 @@ class UserDTO:
         name: str,
         email: str,
         password: str,
-        phone: Optional[int] = None,
+        phone: Optional[str] = None,
         id: Optional[UUID] = None,
     ):
         self.id = id or uuid4()
