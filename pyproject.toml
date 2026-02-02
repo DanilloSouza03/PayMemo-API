@@ -1,25 +1,26 @@
-[project]
-name = "paytrack-api"
+[tool.poetry]
+name = "paymemo"
 version = "0.1.0"
-description = "Api para consumo da PayTrack-web e controle de contas pessoais."
-authors = [
-    {name = "Danillo Souza Pereira",email = "danillodesouza03@gmail.com"}
-]
-license = {text = "Apache-2.0"}
+description = "Api para consumo da PayMemo-WEB e controle de contas pessoais."
+authors = ["Danillo Souza Pereira <danillodesouza03@gmail.com>"]
 readme = "README.md"
-requires-python = ">=3.9"
-dependencies = [
-    "fastapi (>=0.119.0,<0.120.0)",
-    "pydantic (>=2.12.2,<3.0.0)",
-    "uvicorn (>=0.37.0,<0.38.0)"
-]
+license = "Apache-2.0"
+packages = [{ include = "paymemo", from = "src" }]
 
+[tool.poetry.dependencies]
+python = ">=3.9"
+fastapi = "^0.119"
+pydantic = "^2.12"
+uvicorn = "^0.37"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4"
+httpx = "^0.28"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[dependency-groups]
-dev = [
-    "pytest (>=8.4.2,<9.0.0)"
-]
